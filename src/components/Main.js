@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import dummyData from "../dummyData";
+import Card from "./Card";
 
 const Main = () => {
     const [data, setData] = useState(dummyData);
@@ -15,10 +16,20 @@ const Main = () => {
                                 <div className="trello-sction-title">{section.title}</div>
                                 <div className="trello-seciton-content">
                                     {section.tasks.map((task, index) => (
-                                        <Draggable>
-                                            <div>
-                                                <Card></Card>
-                                            </div>
+                                        <Draggable draggableId={task.id} index={index} key={task.id}>
+                                            {(provided, snapshot) => (
+                                                <div
+                                                    ref={provided.innerRef}
+                                                    {...provided.draggableProps}
+                                                    {...provided.dragHandleProps}
+                                                    style={{
+                                                        ...provided.draggableProps.style,
+                                                        opacity: snapshot.isDragging ? "0.2" : "1",
+                                                      }}
+                                                >
+                                                    <Card></Card>
+                                                </div>
+                                            )}
                                         </Draggable>
                                     ))}
                                 </div>       
@@ -27,7 +38,7 @@ const Main = () => {
                 ))}
             </div>
         </DragDropContext>
-    )
+    );
 };
 
 export default Main;
