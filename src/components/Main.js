@@ -25,13 +25,14 @@ const Main = () => {
                                                     style={{
                                                         ...provided.draggableProps.style,
                                                         opacity: snapshot.isDragging ? "0.2" : "1",
-                                                      }}
+                                                    }}
                                                 >
-                                                    <Card></Card>
+                                                    <Card>{task.title}</Card>
                                                 </div>
                                             )}
                                         </Draggable>
                                     ))}
+                                    {provided.placeholder}
                                 </div>       
                             </div>}
                     </Droppable>
