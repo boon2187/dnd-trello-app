@@ -9,18 +9,41 @@ const Main = () => {
     const onDragEnd = (result) => {
         const { source, destination} = result;
 
-        // 同じカラム内でのタスクの入れ替え
-        const sourceColIndex = data.findIndex((e) => e.id === source.droppableId );
-        const sourceCol = data[sourceColIndex];
+        // 別のカラムにタスクが移動したとか判断
+        if (source.droppableId !== destination.droppableId) {
+            // 他のカラムに移動したときのタスクの入れ替え
+            const sourceColIndex = data.findIndex((e) => e.id === source.droppableId );
+            const destinationColIndex = data.findIndex((e) => e.id === destination.droppableId );
+            
+            const sourceCol = data[sourceColIndex];
+            const destinationCol = data[destinationColIndex];
 
-        const sourceTask = [...sourceCol.tasks];
-        // 掴んだタスクを削除する
-        const [removed] = sourceTask.splice(source.index, 1);
-        // 落とすところで、新たなタスクとして追加する
-        sourceTask.splice(destination.index, 0, removed);
+            const sourceTask = [...sourceCol.tasks];
+            const destinationTask = [...destinationCol.tasks];
+            // 掴んだ(sourceCol系)タスクを削除する
+            const [removed] = sourceTask.splice(source.index, 1);
+            // 落とすところ(destination系)で、新たなタスクとして追加する
+            destinationTask.splice(destination.index, 0, removed);
 
-        data[sourceColIndex].tasks = sourceTask;
-        setData(data);
+            data[sourceColIndex].tasks = sourceTask;
+            data[destinationColIndex].tasks = destinationTask;
+
+            setData(data);
+        } else {
+            // 同じカラム内でのタスクの入れ替え
+            const sourceColIndex = data.findIndex((e) => e.id === source.droppableId );
+            const sourceCol = data[sourceColIndex];
+
+            const sourceTask = [...sourceCol.tasks];
+            // 掴んだタスクを削除する
+            const [removed] = sourceTask.splice(source.index, 1);
+            // 落とすところで、新たなタスクとして追加する
+            sourceTask.splice(destination.index, 0, removed);
+
+            data[sourceColIndex].tasks = sourceTask;
+            setData(data);
+        }
+
 
     };
 
